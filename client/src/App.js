@@ -9,7 +9,7 @@ const { Header, Footer, Content } = Layout;
 function App() {
 	return (
 		<div>
-			<Layout style={{ height: '100vh' }}>
+			<Layout style={{ minHeight: '100vh' }}>
 				<Header style={{ backgroundColor: '#F0F2F5' }}>Logo</Header>
 				<Content className={classes.Content}>
 					<Navigator />
