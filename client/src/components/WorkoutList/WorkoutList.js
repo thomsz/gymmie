@@ -1,4 +1,5 @@
 import React from 'react';
+import { Router, Link } from 'react-router-dom';
 import { List } from 'antd';
 
 const data = [
@@ -54,7 +55,11 @@ const WorkoutList = () => {
 					}
 				>
 					<List.Item.Meta
-						title={<a href="#">{item.name}</a>}
+						title={
+							<Link to={`/workout/${item._id.$oid}`}>
+								{item.name}
+							</Link>
+						}
 						description={item.description}
 					/>
 					Content
