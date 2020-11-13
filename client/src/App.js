@@ -1,7 +1,25 @@
-import './App.css';
+import classes from './App.module.css';
+import { Layout } from 'antd';
+import ListPage from './containers/ListPage';
+import WorkoutPage from './containers/WorkoutPage';
+import Navigator from './components/Navigator/Navigator';
+
+const { Header, Footer, Content } = Layout;
 
 function App() {
-	return <div className="App"></div>;
+	return (
+		<div>
+			<Layout style={{ height: '100vh' }}>
+				<Header style={{ backgroundColor: '#F0F2F5' }}>Logo</Header>
+				<Content className={classes.Content}>
+					<Navigator />
+					<ListPage />
+					<WorkoutPage />
+				</Content>
+				<Footer>Footer</Footer>
+			</Layout>
+		</div>
+	);
 }
 
 export default App;
