@@ -1,9 +1,9 @@
 import React from 'react';
-import { Select, Space } from 'antd';
+import { Select, PageHeader } from 'antd';
 
 const { Option } = Select;
 
-const Navigator = () => {
+const Filters = () => {
 	const startDateFilterChangeHandler = (month) => {
 		console.log('Filter by a new date', month);
 	};
@@ -12,15 +12,16 @@ const Navigator = () => {
 		console.log('Filter by a category', category);
 	};
 
+	// mock categories
 	const children = [];
 	for (let i = 10; i < 36; i++) {
 		children.push(
-			<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
+			<Option key={i.toString(20) + i}>{i.toString(20) + i}</Option>
 		);
 	}
 
-	return (
-		<Space>
+	const Extra = () => {
+		return [
 			<Select
 				defaultValue="11"
 				style={{ width: 120 }}
@@ -33,7 +34,7 @@ const Navigator = () => {
 				<Option value="3">March</Option>
 				<Option value="4">April</Option>
 				<Option value="5">May</Option>
-			</Select>
+			</Select>,
 			<Select
 				mode="multiple"
 				allowClear
@@ -44,9 +45,11 @@ const Navigator = () => {
 				onChange={categoryFilterChangeHandler}
 			>
 				{children}
-			</Select>
-		</Space>
-	);
+			</Select>,
+		];
+	};
+
+	return <PageHeader title="Workouts" extra={<Extra />} />;
 };
 
-export default Navigator;
+export default Filters;

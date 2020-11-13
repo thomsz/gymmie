@@ -2,7 +2,7 @@ import classes from './App.module.css';
 import { Layout } from 'antd';
 import ListPage from './containers/ListPage';
 import WorkoutPage from './containers/WorkoutPage';
-import Navigator from './components/Navigator/Navigator';
+import Filters from './components/Filters/Filters';
 
 const { Header, Footer, Content } = Layout;
 
@@ -12,7 +12,7 @@ function App() {
 			<Layout style={{ minHeight: '100vh' }}>
 				<Header style={{ backgroundColor: '#F0F2F5' }}>Logo</Header>
 				<Content className={classes.Content}>
-					<Navigator />
+					<Filters />
 					<ListPage />
 					<WorkoutPage />
 				</Content>
