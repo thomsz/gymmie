@@ -5,10 +5,25 @@ const router = express.Router();
 const Workout = require('../database/models/workoutModel');
 
 // Get all workouts
+// /?page=1&limit=20
 router.get('/', async (req, res) => {
-	// TODO: Pagination
+	let limit = 20;
+	let skip = 0;
+
+	// Limit {limit} query option to 50
+	if (req.query.limit > 0 && req.query.limit < 50) {
+		limit = +req.query.limit;
+	}
+
+	if (req.query.page > 0) {
+		skip = (req.query.page - 1) * limit;
+	}
+
 	try {
-		const workouts = await Workout.find().sort({ _id: 'desc' });
+		const workouts = await Workout.find()
+			.sort({ _id: 'desc' })
+			.limit(limit)
+			.skip(skip);
 
 		res.send(workouts);
 	} catch (error) {
