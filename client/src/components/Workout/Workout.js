@@ -4,10 +4,12 @@ import Image from '../Image/Image';
 
 const { Paragraph } = Typography;
 
-const Workout = () => {
+const Workout = (props) => {
+	const { current } = props;
+
 	return (
 		<PageHeader
-			title="Yoga Express"
+			title={current}
 			tags={<Tag>Jogging</Tag>}
 			onBack={() => window.history.back()}
 		>

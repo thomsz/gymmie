@@ -1,8 +1,8 @@
 import classes from './App.module.css';
 import { Layout } from 'antd';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ListPage from './containers/ListPage';
 import WorkoutPage from './containers/WorkoutPage';
-import Filters from './components/Filters/Filters';
 
 const { Header, Footer, Content } = Layout;
 
@@ -12,9 +12,18 @@ function App() {
 			<Layout style={{ minHeight: '100vh' }}>
 				<Header style={{ backgroundColor: '#F0F2F5' }}>Logo</Header>
 				<Content className={classes.Content}>
-					<Filters />
-					<ListPage />
-					<WorkoutPage />
+					<Router>
+						<Switch>
+							<Route
+								path="/workout/:name"
+								children={<WorkoutPage />}
+							/>
+							<Route path="/:page" children={<ListPage />} />
+							<Route path="*">
+								<ListPage />
+							</Route>
+						</Switch>
+					</Router>
 				</Content>
 				<Footer>Footer</Footer>
 			</Layout>
