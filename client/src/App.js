@@ -24,9 +24,12 @@ function App() {
 									<ListPage {...routeProps} />
 								)}
 							/>
-							<Route path="*">
-								<ListPage />
-							</Route>
+							<Route
+								path="*"
+								children={(routeProps) => (
+									<ListPage {...routeProps} />
+								)}
+							/>
 						</Switch>
 					</Router>
 				</Content>

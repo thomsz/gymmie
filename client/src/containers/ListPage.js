@@ -10,7 +10,9 @@ const ListPage = (props) => {
 
 	const [selectedPage, setSelectedPage] = useState(page);
 	const [data, setData] = useState([]);
+	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+	const [filterMode, setFilterMode] = useState(false);
 
 	useEffect(() => {
 		(async () => {
@@ -21,9 +23,11 @@ const ListPage = (props) => {
 					`${process.env.REACT_APP_API_URI}/workouts?page=${selectedPage}`
 				);
 
-				const { data } = response.data;
+				const { data, count } = response.data;
 
 				if (response.status === 200 && data.length > 0) {
+					const currentCount = filterMode ? count.data : count.total;
+					setTotalItems(currentCount);
 					setData(data);
 				} else throw new Error('Could not fetch workouts');
 			} catch (error) {
@@ -44,9 +48,15 @@ const ListPage = (props) => {
 			<Filters />
 			{isLoading ? <h2>Loading...</h2> : <WorkoutList workouts={data} />}
 			<Pagination
-				defaultCurrent={page}
-				total={50}
+				current={(page && +page) || 1}
+				defaultPageSize={20}
+				total={totalItems}
+				showTotal={(total, range) =>
+					`Showing workouts ${range[0]}-${range[1]} (${total} total)`
+				}
+				showSizeChanger={false}
 				onChange={(page) => pageChangeHandler(page)}
+				size="small"
 			/>
 		</>
 	);
