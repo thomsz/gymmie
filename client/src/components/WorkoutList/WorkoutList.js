@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { List } from 'antd';
+import Image from '../Image/Image';
 
 const WorkoutList = () => {
 	const [workouts, setWorkouts] = useState([]);
@@ -37,11 +38,9 @@ const WorkoutList = () => {
 				<List.Item
 					key={item.name}
 					extra={
-						<img
-							width={272}
-							alt="logo"
-							src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-						/>
+						<div style={{ width: 272 }}>
+							<Image name={item.image} />
+						</div>
 					}
 				>
 					<List.Item.Meta
