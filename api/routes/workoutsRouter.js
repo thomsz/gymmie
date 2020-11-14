@@ -8,7 +8,7 @@ const Workout = require('../database/models/workoutModel');
 router.get('/', async (req, res) => {
 	// TODO: Pagination
 	try {
-		const workouts = await Workout.find();
+		const workouts = await Workout.find().sort({ _id: 'desc' });
 
 		res.send(workouts);
 	} catch (error) {
