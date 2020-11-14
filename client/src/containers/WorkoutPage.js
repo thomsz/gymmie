@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Skeleton, PageHeader, Row, Space } from 'antd';
 import { useParams } from 'react-router-dom';
 import Workout from '../components/Workout/Workout';
 
@@ -29,7 +30,30 @@ const WorkoutPage = () => {
 		})();
 	}, []);
 
-	return isLoading ? <h2>Loading...</h2> : <Workout data={data} />;
+	return isLoading ? (
+		<div>
+			<PageHeader
+				title={
+					<Space>
+						<Skeleton.Avatar active shape="square" />
+						<Skeleton.Input style={{ width: 150 }} active />
+					</Space>
+				}
+				subTitle={<Skeleton.Input style={{ width: 100 }} active />}
+			>
+				<Row>
+					<div style={{ flex: 1 }}>
+						<Skeleton active />
+					</div>
+					<div style={{ margin: 10 }}>
+						<Skeleton active />
+					</div>
+				</Row>
+			</PageHeader>
+		</div>
+	) : (
+		<Workout data={data} />
+	);
 };
 
 export default WorkoutPage;
