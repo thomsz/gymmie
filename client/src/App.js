@@ -15,7 +15,7 @@ function App() {
 					<Router>
 						<Switch>
 							<Route
-								path="/workout/:name"
+								path="/workout/:id"
 								children={<WorkoutPage />}
 							/>
 							<Route
