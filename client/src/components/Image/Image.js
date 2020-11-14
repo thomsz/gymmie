@@ -7,8 +7,12 @@ const Image = (props) => {
 
 	useEffect(() => {
 		(async () => {
-			const loadedImage = await import(`../../images/${name}.svg`);
-			setImage(loadedImage);
+			try {
+				const loadedImage = await import(`../../images/${name}.svg`);
+				setImage(loadedImage);
+			} catch (error) {
+				console.error('Could not fetch image');
+			}
 		})();
 	}, []);
 
