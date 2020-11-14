@@ -5,7 +5,7 @@ import { Pagination } from 'antd';
 import WorkoutList from '../components/WorkoutList/WorkoutList';
 import Filters from '../components/Filters/Filters';
 
-const ListPage = () => {
+const ListPage = (props) => {
 	const { page } = useParams();
 
 	const [selectedPage, setSelectedPage] = useState(page);
@@ -32,6 +32,11 @@ const ListPage = () => {
 		})();
 	}, [selectedPage]);
 
+	const pageChangeHandler = (page) => {
+		setSelectedPage(page);
+		props.history.push(`/${page}`);
+	};
+
 	return (
 		<>
 			<Filters />
@@ -39,7 +44,7 @@ const ListPage = () => {
 			<Pagination
 				defaultCurrent={page}
 				total={50}
-				onChange={(page) => setSelectedPage(page)}
+				onChange={(page) => pageChangeHandler(page)}
 			/>
 		</>
 	);

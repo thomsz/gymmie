@@ -18,7 +18,12 @@ function App() {
 								path="/workout/:name"
 								children={<WorkoutPage />}
 							/>
-							<Route path="/:page" children={<ListPage />} />
+							<Route
+								path="/:page"
+								children={(routeProps) => (
+									<ListPage {...routeProps} />
+								)}
+							/>
 							<Route path="*">
 								<ListPage />
 							</Route>
