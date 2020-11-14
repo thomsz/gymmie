@@ -4,6 +4,7 @@ const router = express.Router();
 
 const Workout = require('../database/models/workoutModel');
 
+// Get all workouts
 router.get('/', async (req, res) => {
 	// TODO: Pagination
 	try {
@@ -22,8 +23,22 @@ router.get('/', async (req, res) => {
 	}
 });
 
-router.get('/:id', (req, res) => {
-	// TODO: Get workout by id
+// Get workout by id
+router.get('/:id', async (req, res) => {
+	try {
+		const workout = await Workout.findById(req.params.id);
+
+		res.send(workout);
+	} catch (error) {
+		res.status(501).send({
+			errors: [
+				{
+					status: '501',
+					title: 'Could not fetch workout',
+				},
+			],
+		});
+	}
 });
 
 module.exports = router;
