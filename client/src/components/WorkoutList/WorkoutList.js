@@ -1,38 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { List } from 'antd';
 import Image from '../Image/Image';
 
-const WorkoutList = () => {
-	const [workouts, setWorkouts] = useState([]);
-
-	useEffect(() => {
-		(async () => {
-			try {
-				const response = await axios.get(
-					`${process.env.REACT_APP_API_URI}/workouts`
-				);
-
-				if (response.status === 200 && response.data.length > 0) {
-					setWorkouts(response.data);
-				} else throw new Error('Could not fetch workouts');
-			} catch (error) {
-				console.error(error);
-			}
-		})();
-	}, []);
+const WorkoutList = (props) => {
+	const { workouts } = props;
 
 	return (
 		<List
 			itemLayout="vertical"
 			size="large"
-			pagination={{
-				onChange: (page) => {
-					console.log('Fetch new page from API');
-				},
-				pageSize: 3,
-			}}
 			dataSource={workouts}
 			renderItem={(item) => (
 				<List.Item
