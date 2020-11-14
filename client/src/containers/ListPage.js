@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Pagination } from 'antd';
+import { default as scroll } from 'animated-scroll-to';
+import { Pagination, Skeleton, List } from 'antd';
 import WorkoutList from '../components/WorkoutList/WorkoutList';
 import Filters from '../components/Filters/Filters';
 
@@ -41,12 +42,41 @@ const ListPage = (props) => {
 	const pageChangeHandler = (page) => {
 		setSelectedPage(page);
 		props.history.push(`/${page}`);
+		scroll(0, { speed: 500 });
+	};
+
+	const SkeletonList = () => {
+		const skeletons = [];
+		for (let i = 1; i <= 20; i++) {
+			skeletons.push(i);
+		}
+
+		return (
+			<List
+				itemLayout="vertical"
+				size="large"
+				dataSource={skeletons}
+				renderItem={(item) => (
+					<List.Item
+						key={item}
+						extra={
+							<Skeleton.Image
+								active
+								style={{ width: 272, height: 170 }}
+							/>
+						}
+					>
+						<Skeleton active />
+					</List.Item>
+				)}
+			/>
+		);
 	};
 
 	return (
 		<>
 			<Filters />
-			{isLoading ? <h2>Loading...</h2> : <WorkoutList workouts={data} />}
+			{isLoading ? <SkeletonList /> : <WorkoutList workouts={data} />}
 			<Pagination
 				current={(page && +page) || 1}
 				defaultPageSize={20}

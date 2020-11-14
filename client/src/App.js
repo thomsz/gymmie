@@ -9,8 +9,8 @@ const { Header, Footer, Content } = Layout;
 function App() {
 	return (
 		<div>
-			<Layout style={{ minHeight: '100vh' }}>
-				<Header style={{ backgroundColor: '#F0F2F5' }}>Logo</Header>
+			<Layout style={{ minHeight: '100vh', backgroundColor: '#f7f7f7' }}>
+				<Header style={{ backgroundColor: '#f7f7f7' }}>Logo</Header>
 				<Content className={classes.Content}>
 					<Router>
 						<Switch>
@@ -33,7 +33,7 @@ function App() {
 						</Switch>
 					</Router>
 				</Content>
-				<Footer>Footer</Footer>
+				<Footer style={{ backgroundColor: '#f7f7f7' }}></Footer>
 			</Layout>
 		</div>
 	);
