@@ -13,7 +13,7 @@ const ListPage = (props) => {
 	const [data, setData] = useState([]);
 	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const [filterMode, setFilterMode] = useState(false);
+	const [filterByDate, setFilterByDate] = useState(null);
 
 	useEffect(() => {
 		(async () => {
@@ -27,7 +27,9 @@ const ListPage = (props) => {
 				const { data, count } = response.data;
 
 				if (response.status === 200 && data.length > 0) {
-					const currentCount = filterMode ? count.data : count.total;
+					const currentCount = filterByDate
+						? count.data
+						: count.total;
 					setTotalItems(currentCount);
 					setData(data);
 				} else throw new Error('Could not fetch workouts');
@@ -37,7 +39,7 @@ const ListPage = (props) => {
 
 			setIsLoading(false);
 		})();
-	}, [selectedPage]);
+	}, [selectedPage, filterByDate]);
 
 	const pageChangeHandler = (page) => {
 		setSelectedPage(page);
@@ -75,7 +77,10 @@ const ListPage = (props) => {
 
 	return (
 		<>
-			<Filters />
+			<Filters
+				filterByDate={filterByDate}
+				setFilterByDate={setFilterByDate}
+			/>
 			{isLoading ? <SkeletonList /> : <WorkoutList workouts={data} />}
 			<Pagination
 				current={(page && +page) || 1}
