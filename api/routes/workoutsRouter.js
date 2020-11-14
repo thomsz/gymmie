@@ -20,12 +20,44 @@ router.get('/', async (req, res) => {
 	}
 
 	try {
-		const workouts = await Workout.find()
-			.sort({ _id: 'desc' })
-			.limit(limit)
-			.skip(skip);
+		const workouts = await Workout.aggregate([
+			{
+				$facet: {
+					totalCount: [{ $count: 'data' }],
+					dataCount: [{ $count: 'data' }],
+					currentPageCount: [
+						{ $skip: skip },
+						{ $limit: limit },
+						{ $count: 'data' },
+					],
+					data: [
+						{ $sort: { _id: -1 } },
+						{ $skip: skip },
+						{ $limit: limit },
+					],
+				},
+			},
+		]);
 
-		res.send(workouts);
+		if (workouts[0].data.length > 0) {
+			res.send({
+				count: {
+					onPage: workouts[0].currentPageCount[0].data,
+					data: workouts[0].dataCount[0].data,
+					total: workouts[0].totalCount[0].data,
+				},
+				data: workouts[0].data,
+			});
+		} else {
+			res.status(404).send({
+				errors: [
+					{
+						status: '404',
+						title: 'Could not find data',
+					},
+				],
+			});
+		}
 	} catch (error) {
 		res.status(501).send({
 			errors: [

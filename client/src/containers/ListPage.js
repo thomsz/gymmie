@@ -21,8 +21,10 @@ const ListPage = (props) => {
 					`${process.env.REACT_APP_API_URI}/workouts?page=${selectedPage}`
 				);
 
-				if (response.status === 200 && response.data.length > 0) {
-					setData(response.data);
+				const { data } = response.data;
+
+				if (response.status === 200 && data.length > 0) {
+					setData(data);
 				} else throw new Error('Could not fetch workouts');
 			} catch (error) {
 				console.error(error);
