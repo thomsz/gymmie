@@ -13,7 +13,7 @@ const WorkoutList = (props) => {
 			dataSource={workouts}
 			renderItem={(item) => (
 				<List.Item
-					key={item.name}
+					key={item._id}
 					extra={
 						<div style={{ width: 272 }}>
 							<Image name={item.image} />
