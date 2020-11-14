@@ -1,37 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { List } from 'antd';
 
-const data = [
-	{
-		_id: {
-			$oid: '5fae6093fc13ae17db000000',
-		},
-		name: 'Yoga Recover',
-		description:
-			'In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.',
-		startDate: {
-			$date: '2019-10-11T21:00:00.000Z',
-		},
-		category: 'Beginner',
-		image: 'meditation',
-	},
-	{
-		_id: {
-			$oid: '5fae6093fc13ae17db000000',
-		},
-		name: 'Yoga Recover',
-		description:
-			'In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem. Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.',
-		startDate: {
-			$date: '2019-10-11T21:00:00.000Z',
-		},
-		category: 'Beginner',
-		image: 'meditation',
-	},
-];
-
 const WorkoutList = () => {
+	const [workouts, setWorkouts] = useState([]);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const response = await axios.get(
+					`${process.env.REACT_APP_API_URI}/workouts`
+				);
+
+				if (response.status === 200 && response.data.length > 0) {
+					setWorkouts(response.data);
+				} else throw new Error('Could not fetch workouts');
+			} catch (error) {
+				console.error(error);
+			}
+		})();
+	}, []);
+
 	return (
 		<List
 			itemLayout="vertical"
@@ -42,10 +32,10 @@ const WorkoutList = () => {
 				},
 				pageSize: 3,
 			}}
-			dataSource={data}
+			dataSource={workouts}
 			renderItem={(item) => (
 				<List.Item
-					key={item.title}
+					key={item.name}
 					extra={
 						<img
 							width={272}
@@ -56,9 +46,7 @@ const WorkoutList = () => {
 				>
 					<List.Item.Meta
 						title={
-							<Link to={`/workout/${item._id.$oid}`}>
-								{item.name}
-							</Link>
+							<Link to={`/workout/${item._id}`}>{item.name}</Link>
 						}
 						description={item.description}
 					/>

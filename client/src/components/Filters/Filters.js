@@ -26,6 +26,7 @@ const Filters = () => {
 				defaultValue="11"
 				style={{ width: 120 }}
 				onChange={startDateFilterChangeHandler}
+				key="startDateFilter"
 			>
 				<Option value="11">November</Option>
 				<Option value="12">December</Option>
@@ -43,6 +44,7 @@ const Filters = () => {
 				placeholder="Filter by category"
 				defaultValue={['b11', 'p25']}
 				onChange={categoryFilterChangeHandler}
+				key="categoryFilter"
 			>
 				{children}
 			</Select>,
