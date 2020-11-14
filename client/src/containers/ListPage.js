@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { default as scroll } from 'animated-scroll-to';
 import { Pagination, Skeleton, List } from 'antd';
 import WorkoutList from '../components/WorkoutList/WorkoutList';
 import Filters from '../components/Filters/Filters';
@@ -41,6 +42,7 @@ const ListPage = (props) => {
 	const pageChangeHandler = (page) => {
 		setSelectedPage(page);
 		props.history.push(`/${page}`);
+		scroll(0, { speed: 500 });
 	};
 
 	const SkeletonList = () => {
