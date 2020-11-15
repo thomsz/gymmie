@@ -6,15 +6,7 @@ const workoutSchema = mongoose.Schema({
 	startDate: Date,
 	category: {
 		type: String,
-		enum: [
-			'Lose Fat',
-			'Get Toned',
-			'Gain Strength',
-			'Increase Flexibility',
-			'Beginner',
-			'Intermediate',
-			'Advanced',
-		],
+		enum: ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7'],
 	},
 	image: String,
 });
