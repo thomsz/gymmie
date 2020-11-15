@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ListPage from './containers/ListPage';
 import WorkoutPage from './containers/WorkoutPage';
+import logo from './logo.png';
 
 const { Header, Footer, Content } = Layout;
 
@@ -21,7 +22,9 @@ function App() {
 	return (
 		<div>
 			<Layout style={{ minHeight: '100vh', backgroundColor: '#f7f7f7' }}>
-				<Header style={{ backgroundColor: '#f7f7f7' }}>Logo</Header>
+				<Header style={{ backgroundColor: '#f7f7f7' }}>
+					<img src={logo} width="115" alt="logo" />
+				</Header>
 				<Content className={classes.Content}>
 					<Router>
 						<Switch>
