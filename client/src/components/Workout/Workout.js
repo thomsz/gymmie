@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageHeader, Tag, Typography, Row } from 'antd';
 import Image from '../Image/Image';
+import { categories } from '../../utils/utils';
 
 const { Paragraph } = Typography;
 
@@ -16,7 +17,7 @@ const Workout = (props) => {
 		<PageHeader
 			title={name}
 			subTitle={`Program starts in ${date}`}
-			tags={<Tag>{category}</Tag>}
+			tags={<Tag>{categories[category]}</Tag>}
 			onBack={() => window.history.back()}
 		>
 			<Row>
