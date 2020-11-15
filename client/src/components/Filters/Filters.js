@@ -8,7 +8,7 @@ const Filters = (props) => {
 	const { filterByDate, setFilterByDate } = props;
 
 	const startDateFilterChangeHandler = (month) => {
-		setFilterByDate(month);
+		setFilterByDate(month + 1);
 	};
 
 	const categoryFilterChangeHandler = (category) => {
@@ -31,18 +31,20 @@ const Filters = (props) => {
 		for (let i = 0; i < 12; i++) {
 			const runningMonth = currentMonth + i;
 			const month = runningMonth >= 12 ? runningMonth - 12 : runningMonth;
-			options.push(months[month]);
+			options.push({ id: month, label: months[month] });
 		}
 
 		options = options.map((option) => (
-			<Option key={option} value={option}>
-				{option}
+			<Option key={option.label} value={option.id}>
+				{option.label}
 			</Option>
 		));
 
+		const getMonthValue = filterByDate ? filterByDate - 1 : null;
+
 		return [
 			<Select
-				defaultValue={filterByDate}
+				defaultValue={getMonthValue}
 				style={{ width: 240 }}
 				placeholder="Filter by Starting Date"
 				onChange={startDateFilterChangeHandler}

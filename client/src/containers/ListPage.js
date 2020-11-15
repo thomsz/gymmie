@@ -19,9 +19,12 @@ const ListPage = (props) => {
 		(async () => {
 			setIsLoading(true);
 
+			const filterQuery = filterByDate ? `&month=${filterByDate}` : '';
+
+
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URI}/workouts?page=${selectedPage}`
+					`${process.env.REACT_APP_API_URI}/workouts?page=${selectedPage}${filterQuery}`
 				);
 
 				const { data, count } = response.data;

@@ -5,10 +5,11 @@ const router = express.Router();
 const Workout = require('../database/models/workoutModel');
 
 // Get all workouts
-// /?page=1&limit=20
+// /?page=1&limit=20&month=4
 router.get('/', async (req, res) => {
 	let limit = 20;
 	let skip = 0;
+	let filter = {};
 
 	// Limit {limit} query option to 50
 	if (req.query.limit > 0 && req.query.limit < 50) {
@@ -19,18 +20,35 @@ router.get('/', async (req, res) => {
 		skip = (req.query.page - 1) * limit;
 	}
 
+	const month = +req.query.month;
+	if (month && month >= 1 && month <= 12) {
+		filter = { startDate: month };
+	}
+
 	try {
 		const workouts = await Workout.aggregate([
 			{
 				$facet: {
 					totalCount: [{ $count: 'data' }],
-					dataCount: [{ $count: 'data' }],
+					dataCount: [
+						{ $project: { startDate: { $month: '$startDate' } } },
+						{ $match: filter },
+						{ $count: 'data' },
+					],
 					currentPageCount: [
+						{ $project: { startDate: { $month: '$startDate' } } },
+						{ $match: filter },
 						{ $skip: skip },
 						{ $limit: limit },
 						{ $count: 'data' },
 					],
 					data: [
+						{
+							$set: {
+								startDate: { $month: '$startDate' },
+							},
+						},
+						{ $match: filter },
 						{ $sort: { _id: -1 } },
 						{ $skip: skip },
 						{ $limit: limit },
