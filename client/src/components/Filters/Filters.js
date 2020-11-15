@@ -1,40 +1,63 @@
 import React from 'react';
 import { Select, PageHeader } from 'antd';
+import { months, categories } from '../../utils/utils';
 
 const { Option } = Select;
 
-const Filters = () => {
+const Filters = (props) => {
+	const {
+		filterByDate,
+		setFilterByDate,
+		filterByCategory,
+		setFilterByCategory,
+	} = props;
+
 	const startDateFilterChangeHandler = (month) => {
-		console.log('Filter by a new date', month);
+		setFilterByDate(month + 1);
 	};
 
-	const categoryFilterChangeHandler = (category) => {
-		console.log('Filter by a category', category);
+	const categoryFilterChangeHandler = (categories) => {
+		setFilterByCategory(categories);
 	};
-
-	// mock categories
-	const children = [];
-	for (let i = 10; i < 36; i++) {
-		children.push(
-			<Option key={i.toString(20) + i}>{i.toString(20) + i}</Option>
-		);
-	}
 
 	const Extra = () => {
+		const date = new Date();
+		const currentMonth = date.getMonth();
+
+		let options = [];
+		for (let i = 0; i < 12; i++) {
+			const runningMonth = currentMonth + i;
+			const month = runningMonth >= 12 ? runningMonth - 12 : runningMonth;
+			options.push({ id: month, label: months[month] });
+		}
+
+		options = options.map((option) => (
+			<Option key={option.label} value={option.id}>
+				{option.label}
+			</Option>
+		));
+
+		const children = Object.keys(categories).map((id) => {
+			return (
+				<Option key={categories[id]} value={id}>
+					{categories[id]}
+				</Option>
+			);
+		});
+
+		const getMonthValue = filterByDate ? filterByDate - 1 : null;
+
 		return [
 			<Select
-				defaultValue="11"
-				style={{ width: 120 }}
+				defaultValue={getMonthValue}
+				style={{ width: 240 }}
+				placeholder="Filter by Starting Date"
 				onChange={startDateFilterChangeHandler}
+				onClear={() => setFilterByDate(null)}
 				key="startDateFilter"
+				allowClear
 			>
-				<Option value="11">November</Option>
-				<Option value="12">December</Option>
-				<Option value="1">January</Option>
-				<Option value="2">February</Option>
-				<Option value="3">March</Option>
-				<Option value="4">April</Option>
-				<Option value="5">May</Option>
+				{options}
 			</Select>,
 			<Select
 				mode="multiple"
@@ -42,7 +65,7 @@ const Filters = () => {
 				maxTagCount={2}
 				style={{ width: 240 }}
 				placeholder="Filter by category"
-				defaultValue={['b11', 'p25']}
+				defaultValue={filterByCategory}
 				onChange={categoryFilterChangeHandler}
 				key="categoryFilter"
 			>

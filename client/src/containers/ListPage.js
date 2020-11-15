@@ -13,21 +13,32 @@ const ListPage = (props) => {
 	const [data, setData] = useState([]);
 	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const [filterMode, setFilterMode] = useState(false);
+	const [filterByDate, setFilterByDate] = useState(null);
+	const [filterByCategory, setFilterByCategory] = useState([]);
 
 	useEffect(() => {
 		(async () => {
 			setIsLoading(true);
 
+			let filterQuery = filterByDate ? `&month=${filterByDate}` : '';
+
+			filterQuery +=
+				filterByCategory.length > 0
+					? `&category=${filterByCategory.join(',')}`
+					: '';
+
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URI}/workouts?page=${selectedPage}`
+					`${process.env.REACT_APP_API_URI}/workouts?page=${selectedPage}${filterQuery}`
 				);
 
 				const { data, count } = response.data;
 
 				if (response.status === 200 && data.length > 0) {
-					const currentCount = filterMode ? count.data : count.total;
+					const currentCount =
+						filterByDate || filterByCategory.length > 0
+							? count.data
+							: count.total;
 					setTotalItems(currentCount);
 					setData(data);
 				} else throw new Error('Could not fetch workouts');
@@ -37,7 +48,7 @@ const ListPage = (props) => {
 
 			setIsLoading(false);
 		})();
-	}, [selectedPage]);
+	}, [selectedPage, filterByDate, filterByCategory]);
 
 	const pageChangeHandler = (page) => {
 		setSelectedPage(page);
@@ -75,7 +86,12 @@ const ListPage = (props) => {
 
 	return (
 		<>
-			<Filters />
+			<Filters
+				filterByDate={filterByDate}
+				setFilterByDate={setFilterByDate}
+				filterByCategory={filterByCategory}
+				setFilterByCategory={setFilterByCategory}
+			/>
 			{isLoading ? <SkeletonList /> : <WorkoutList workouts={data} />}
 			<Pagination
 				current={(page && +page) || 1}
