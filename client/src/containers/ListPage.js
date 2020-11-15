@@ -93,17 +93,19 @@ const ListPage = (props) => {
 				setFilterByCategory={setFilterByCategory}
 			/>
 			{isLoading ? <SkeletonList /> : <WorkoutList workouts={data} />}
-			<Pagination
-				current={(page && +page) || 1}
-				defaultPageSize={20}
-				total={totalItems}
-				showTotal={(total, range) =>
-					`Showing workouts ${range[0]}-${range[1]} (${total} total)`
-				}
-				showSizeChanger={false}
-				onChange={(page) => pageChangeHandler(page)}
-				size="small"
-			/>
+			{totalItems > 20 && (
+				<Pagination
+					current={(page && +page) || 1}
+					defaultPageSize={20}
+					total={totalItems}
+					showTotal={(total, range) =>
+						`Showing workouts ${range[0]}-${range[1]} (${total} total)`
+					}
+					showSizeChanger={false}
+					onChange={(page) => pageChangeHandler(page)}
+					size="small"
+				/>
+			)}
 		</>
 	);
 };
