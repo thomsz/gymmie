@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 	const month = +req.query.month;
 	let monthFilter = {};
 	if (month && month >= 1 && month <= 12) {
-		monthFilter = { startDate: month };
+		monthFilter = { monthNum: month };
 	}
 
 	let categories = req.query.category;
@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
 						{ $match: categoryFilter },
 						{
 							$project: {
-								startDate: { $month: '$startDate' },
+								monthNum: { $month: '$startDate' },
 								category: true,
 							},
 						},
@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
 						{ $match: categoryFilter },
 						{
 							$project: {
-								startDate: { $month: '$startDate' },
+								monthNum: { $month: '$startDate' },
 								category: true,
 							},
 						},
@@ -65,7 +65,7 @@ router.get('/', async (req, res) => {
 					data: [
 						{
 							$set: {
-								startDate: { $month: '$startDate' },
+								monthNum: { $month: '$startDate' },
 							},
 						},
 						{ $match: categoryFilter },

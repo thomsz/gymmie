@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageHeader, Tag, Typography, Row } from 'antd';
 import Image from '../Image/Image';
-import { categories } from '../../utils/utils';
+import { categories, getMonth } from '../../utils/utils';
 
 const { Paragraph } = Typography;
 
@@ -10,13 +10,10 @@ const Workout = (props) => {
 
 	const { name, description, startDate, category, image } = data;
 
-	let date = new Date(startDate);
-	date = date.toLocaleDateString('en-US', { month: 'long' });
-
 	return (
 		<PageHeader
 			title={name}
-			subTitle={`Program starts in ${date}`}
+			subTitle={`Program starts in ${getMonth(startDate)}`}
 			tags={<Tag>{categories[category]}</Tag>}
 			onBack={() => window.history.back()}
 		>

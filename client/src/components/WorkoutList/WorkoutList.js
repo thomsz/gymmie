@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { List } from 'antd';
+import { List, Tag, Space } from 'antd';
 import Image from '../Image/Image';
+import { categories, getMonth } from '../../utils/utils';
 
 const WorkoutList = (props) => {
 	const { workouts } = props;
@@ -26,7 +27,10 @@ const WorkoutList = (props) => {
 						}
 						description={item.description}
 					/>
-					Content
+					<Space>
+						<div>Program starts in {getMonth(item.startDate)}</div>
+						<Tag>{categories[item.category]}</Tag>
+					</Space>
 				</List.Item>
 			)}
 		/>
