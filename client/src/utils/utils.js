@@ -22,3 +22,8 @@ export const categories = {
 	c6: 'Intermediate',
 	c7: 'Advanced',
 };
+
+export const getMonth = (date) => {
+	date = new Date(date);
+	return date.toLocaleDateString('en-US', { month: 'long' });
+};
