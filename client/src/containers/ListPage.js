@@ -9,12 +9,17 @@ import Filters from '../components/Filters/Filters';
 const ListPage = (props) => {
 	const { page } = useParams();
 
+	const {
+		filterByDate,
+		setFilterByDate,
+		filterByCategory,
+		setFilterByCategory,
+	} = props;
+
 	const [selectedPage, setSelectedPage] = useState(page);
 	const [data, setData] = useState([]);
 	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const [filterByDate, setFilterByDate] = useState(null);
-	const [filterByCategory, setFilterByCategory] = useState([]);
 
 	useEffect(() => {
 		(async () => {
@@ -50,10 +55,10 @@ const ListPage = (props) => {
 		})();
 	}, [selectedPage, filterByDate, filterByCategory]);
 
-	useEffect(() => {
+	const filterChangeHandler = () => {
 		setSelectedPage(1);
 		props.history.push('/1');
-	}, [filterByDate, filterByCategory]);
+	};
 
 	const pageChangeHandler = (page) => {
 		setSelectedPage(page);
@@ -96,6 +101,7 @@ const ListPage = (props) => {
 				setFilterByDate={setFilterByDate}
 				filterByCategory={filterByCategory}
 				setFilterByCategory={setFilterByCategory}
+				onFilterChange={filterChangeHandler}
 			/>
 			{isLoading ? <SkeletonList /> : <WorkoutList workouts={data} />}
 			{totalItems > 20 && (
