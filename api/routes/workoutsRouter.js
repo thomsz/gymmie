@@ -5,11 +5,10 @@ const router = express.Router();
 const Workout = require('../database/models/workoutModel');
 
 // Get all workouts
-// /?page=1&limit=20&month=4
+// /?page=1&limit=20&month=4&categories=c5
 router.get('/', async (req, res) => {
 	let limit = 20;
 	let skip = 0;
-	let filter = {};
 
 	// Limit {limit} query option to 50
 	if (req.query.limit > 0 && req.query.limit < 50) {
@@ -21,8 +20,17 @@ router.get('/', async (req, res) => {
 	}
 
 	const month = +req.query.month;
+	let monthFilter = {};
 	if (month && month >= 1 && month <= 12) {
-		filter = { startDate: month };
+		monthFilter = { startDate: month };
+	}
+
+	let categories = req.query.category;
+	let categoryFilter = {};
+
+	if (categories) {
+		categories = categories.split(',');
+		categoryFilter = { category: { $in: categories } };
 	}
 
 	try {
@@ -31,13 +39,25 @@ router.get('/', async (req, res) => {
 				$facet: {
 					totalCount: [{ $count: 'data' }],
 					dataCount: [
-						{ $project: { startDate: { $month: '$startDate' } } },
-						{ $match: filter },
+						{ $match: categoryFilter },
+						{
+							$project: {
+								startDate: { $month: '$startDate' },
+								category: true,
+							},
+						},
+						{ $match: monthFilter },
 						{ $count: 'data' },
 					],
 					currentPageCount: [
-						{ $project: { startDate: { $month: '$startDate' } } },
-						{ $match: filter },
+						{ $match: categoryFilter },
+						{
+							$project: {
+								startDate: { $month: '$startDate' },
+								category: true,
+							},
+						},
+						{ $match: monthFilter },
 						{ $skip: skip },
 						{ $limit: limit },
 						{ $count: 'data' },
@@ -48,7 +68,8 @@ router.get('/', async (req, res) => {
 								startDate: { $month: '$startDate' },
 							},
 						},
-						{ $match: filter },
+						{ $match: categoryFilter },
+						{ $match: monthFilter },
 						{ $sort: { _id: -1 } },
 						{ $skip: skip },
 						{ $limit: limit },

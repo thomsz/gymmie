@@ -1,27 +1,24 @@
 import React from 'react';
 import { Select, PageHeader } from 'antd';
-import { months } from '../../utils/utils';
+import { months, categories } from '../../utils/utils';
 
 const { Option } = Select;
 
 const Filters = (props) => {
-	const { filterByDate, setFilterByDate } = props;
+	const {
+		filterByDate,
+		setFilterByDate,
+		filterByCategory,
+		setFilterByCategory,
+	} = props;
 
 	const startDateFilterChangeHandler = (month) => {
 		setFilterByDate(month + 1);
 	};
 
-	const categoryFilterChangeHandler = (category) => {
-		console.log('Filter by a category', category);
+	const categoryFilterChangeHandler = (categories) => {
+		setFilterByCategory(categories);
 	};
-
-	// mock categories
-	const children = [];
-	for (let i = 10; i < 36; i++) {
-		children.push(
-			<Option key={i.toString(20) + i}>{i.toString(20) + i}</Option>
-		);
-	}
 
 	const Extra = () => {
 		const date = new Date();
@@ -39,6 +36,14 @@ const Filters = (props) => {
 				{option.label}
 			</Option>
 		));
+
+		const children = Object.keys(categories).map((id) => {
+			return (
+				<Option key={categories[id]} value={id}>
+					{categories[id]}
+				</Option>
+			);
+		});
 
 		const getMonthValue = filterByDate ? filterByDate - 1 : null;
 
@@ -60,7 +65,7 @@ const Filters = (props) => {
 				maxTagCount={2}
 				style={{ width: 240 }}
 				placeholder="Filter by category"
-				defaultValue={['b11', 'p25']}
+				defaultValue={filterByCategory}
 				onChange={categoryFilterChangeHandler}
 				key="categoryFilter"
 			>
