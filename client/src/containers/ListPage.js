@@ -50,6 +50,11 @@ const ListPage = (props) => {
 		})();
 	}, [selectedPage, filterByDate, filterByCategory]);
 
+	useEffect(() => {
+		setSelectedPage(1);
+		props.history.push('/1');
+	}, [filterByDate, filterByCategory]);
+
 	const pageChangeHandler = (page) => {
 		setSelectedPage(page);
 		props.history.push(`/${page}`);
