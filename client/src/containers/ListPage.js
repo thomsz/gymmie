@@ -5,6 +5,7 @@ import { default as scroll } from 'animated-scroll-to';
 import { Pagination, Skeleton, List } from 'antd';
 import WorkoutList from '../components/WorkoutList/WorkoutList';
 import Filters from '../components/Filters/Filters';
+import Fallback from '../components/Fallback/Fallback';
 
 const ListPage = (props) => {
 	const { page } = useParams();
@@ -20,6 +21,7 @@ const ListPage = (props) => {
 	const [data, setData] = useState([]);
 	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+	const [fallback, setFallback] = useState(false);
 
 	useEffect(() => {
 		(async () => {
@@ -48,6 +50,7 @@ const ListPage = (props) => {
 					setData(data);
 				} else throw new Error('Could not fetch workouts');
 			} catch (error) {
+				setFallback(true);
 				console.error(error);
 			}
 
@@ -103,7 +106,13 @@ const ListPage = (props) => {
 				setFilterByCategory={setFilterByCategory}
 				onFilterChange={filterChangeHandler}
 			/>
-			{isLoading ? <SkeletonList /> : <WorkoutList workouts={data} />}
+			{isLoading ? (
+				<SkeletonList />
+			) : fallback ? (
+				<Fallback />
+			) : (
+				<WorkoutList workouts={data} />
+			)}
 			{totalItems > 20 && (
 				<Pagination
 					current={(page && +page) || 1}
