@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import classes from './App.module.css';
 import { Layout } from 'antd';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -7,6 +8,16 @@ import WorkoutPage from './containers/WorkoutPage';
 const { Header, Footer, Content } = Layout;
 
 function App() {
+	const [filterByDate, setFilterByDate] = useState(null);
+	const [filterByCategory, setFilterByCategory] = useState([]);
+
+	const filters = {
+		filterByDate,
+		setFilterByDate,
+		filterByCategory,
+		setFilterByCategory,
+	};
+
 	return (
 		<div>
 			<Layout style={{ minHeight: '100vh', backgroundColor: '#f7f7f7' }}>
@@ -21,13 +32,13 @@ function App() {
 							<Route
 								path="/:page"
 								children={(routeProps) => (
-									<ListPage {...routeProps} />
+									<ListPage {...routeProps} {...filters} />
 								)}
 							/>
 							<Route
 								path="*"
 								children={(routeProps) => (
-									<ListPage {...routeProps} />
+									<ListPage {...routeProps} {...filters} />
 								)}
 							/>
 						</Switch>

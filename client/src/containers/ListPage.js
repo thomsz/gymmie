@@ -5,16 +5,23 @@ import { default as scroll } from 'animated-scroll-to';
 import { Pagination, Skeleton, List } from 'antd';
 import WorkoutList from '../components/WorkoutList/WorkoutList';
 import Filters from '../components/Filters/Filters';
+import Fallback from '../components/Fallback/Fallback';
 
 const ListPage = (props) => {
 	const { page } = useParams();
+
+	const {
+		filterByDate,
+		setFilterByDate,
+		filterByCategory,
+		setFilterByCategory,
+	} = props;
 
 	const [selectedPage, setSelectedPage] = useState(page);
 	const [data, setData] = useState([]);
 	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const [filterByDate, setFilterByDate] = useState(null);
-	const [filterByCategory, setFilterByCategory] = useState([]);
+	const [fallback, setFallback] = useState(false);
 
 	useEffect(() => {
 		(async () => {
@@ -43,12 +50,18 @@ const ListPage = (props) => {
 					setData(data);
 				} else throw new Error('Could not fetch workouts');
 			} catch (error) {
+				setFallback(true);
 				console.error(error);
 			}
 
 			setIsLoading(false);
 		})();
 	}, [selectedPage, filterByDate, filterByCategory]);
+
+	const filterChangeHandler = () => {
+		setSelectedPage(1);
+		props.history.push('/1');
+	};
 
 	const pageChangeHandler = (page) => {
 		setSelectedPage(page);
@@ -91,19 +104,28 @@ const ListPage = (props) => {
 				setFilterByDate={setFilterByDate}
 				filterByCategory={filterByCategory}
 				setFilterByCategory={setFilterByCategory}
+				onFilterChange={filterChangeHandler}
 			/>
-			{isLoading ? <SkeletonList /> : <WorkoutList workouts={data} />}
-			<Pagination
-				current={(page && +page) || 1}
-				defaultPageSize={20}
-				total={totalItems}
-				showTotal={(total, range) =>
-					`Showing workouts ${range[0]}-${range[1]} (${total} total)`
-				}
-				showSizeChanger={false}
-				onChange={(page) => pageChangeHandler(page)}
-				size="small"
-			/>
+			{isLoading ? (
+				<SkeletonList />
+			) : fallback ? (
+				<Fallback />
+			) : (
+				<WorkoutList workouts={data} />
+			)}
+			{totalItems > 20 && (
+				<Pagination
+					current={(page && +page) || 1}
+					defaultPageSize={20}
+					total={totalItems}
+					showTotal={(total, range) =>
+						`Showing workouts ${range[0]}-${range[1]} (${total} total)`
+					}
+					showSizeChanger={false}
+					onChange={(page) => pageChangeHandler(page)}
+					size="small"
+				/>
+			)}
 		</>
 	);
 };

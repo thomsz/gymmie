@@ -10,14 +10,17 @@ const Filters = (props) => {
 		setFilterByDate,
 		filterByCategory,
 		setFilterByCategory,
+		onFilterChange,
 	} = props;
 
 	const startDateFilterChangeHandler = (month) => {
 		setFilterByDate(month + 1);
+		onFilterChange();
 	};
 
 	const categoryFilterChangeHandler = (categories) => {
 		setFilterByCategory(categories);
+		onFilterChange();
 	};
 
 	const Extra = () => {
