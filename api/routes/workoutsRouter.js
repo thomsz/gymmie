@@ -87,6 +87,7 @@ router.get('/', async (req, res) => {
 					total: workouts[0].totalCount[0].data,
 				},
 				data: workouts[0].data,
+				pollution: workouts[0].pollution,
 			});
 		} else {
 			res.status(404).send({
