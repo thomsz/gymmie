@@ -1,5 +1,6 @@
 import React from 'react';
-import { Select, PageHeader } from 'antd';
+import { Select, PageHeader, Space } from 'antd';
+import { Link } from 'react-router-dom';
 import { months, categories } from '../../utils/utils';
 
 const { Option } = Select;
@@ -50,34 +51,38 @@ const Filters = (props) => {
 
 		const getMonthValue = filterByDate ? filterByDate - 1 : null;
 
-		return [
-			<Select
-				defaultValue={getMonthValue}
-				style={{ width: 240 }}
-				placeholder="Filter by Starting Date"
-				onChange={startDateFilterChangeHandler}
-				onClear={() => setFilterByDate(null)}
-				key="startDateFilter"
-				allowClear
-			>
-				{options}
-			</Select>,
-			<Select
-				mode="multiple"
-				allowClear
-				maxTagCount={2}
-				style={{ width: 240 }}
-				placeholder="Filter by category"
-				defaultValue={filterByCategory}
-				onChange={categoryFilterChangeHandler}
-				key="categoryFilter"
-			>
-				{children}
-			</Select>,
-		];
+		return (
+			<Space>
+				<Select
+					defaultValue={getMonthValue}
+					style={{ width: 240 }}
+					placeholder="Filter by Starting Date"
+					onChange={startDateFilterChangeHandler}
+					onClear={() => setFilterByDate(null)}
+					key="startDateFilter"
+					allowClear
+				>
+					{options}
+				</Select>
+				<Select
+					mode="multiple"
+					allowClear
+					maxTagCount={2}
+					style={{ width: 240 }}
+					placeholder="Filter by category"
+					defaultValue={filterByCategory}
+					onChange={categoryFilterChangeHandler}
+					key="categoryFilter"
+				>
+					{children}
+				</Select>
+			</Space>
+		);
 	};
 
-	return <PageHeader title="Workouts" extra={<Extra />} />;
+	return (
+		<PageHeader title={<Link to="/">Workouts</Link>} extra={<Extra />} />
+	);
 };
 
 export default Filters;

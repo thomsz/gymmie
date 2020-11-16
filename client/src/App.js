@@ -23,7 +23,9 @@ function App() {
 		<div>
 			<Layout style={{ minHeight: '100vh', backgroundColor: '#f7f7f7' }}>
 				<Header style={{ backgroundColor: '#f7f7f7' }}>
-					<img src={logo} width="115" alt="logo" />
+					<a href="/">
+						<img src={logo} width="115" alt="logo" />
+					</a>
 				</Header>
 				<Content className={classes.Content}>
 					<Router>
