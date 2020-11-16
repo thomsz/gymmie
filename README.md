@@ -21,15 +21,7 @@ Or, install all 3 separately (root, client, server)
 
 ## Environment Variables
 
-It is necessary to set up the correct .env variables:
-
-1. Client
-
-```bash
-REACT_APP_API_URI
-```
-
-2. Server
+It is necessary to set up the correct .env variables in the api folder:
 
 ```bash
 MONGO_URL

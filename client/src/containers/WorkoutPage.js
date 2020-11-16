@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import apiUrl from '../utils/apiManager';
 import axios from 'axios';
 
 import Fallback from '../components/Fallback/Fallback';
@@ -20,9 +21,7 @@ const WorkoutPage = () => {
 			setIsLoading(true);
 
 			try {
-				const response = await axios.get(
-					`${process.env.REACT_APP_API_URI}/workouts/${id}`
-				);
+				const response = await axios.get(`${apiUrl}/workouts/${id}`);
 
 				if (response.status === 200) {
 					setData(response.data);

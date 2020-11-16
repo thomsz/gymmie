@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import apiUrl from '../utils/apiManager';
 
 import WorkoutList from '../components/WorkoutList/WorkoutList';
 import Fallback from '../components/Fallback/Fallback';
@@ -40,7 +41,7 @@ const ListPage = (props) => {
 			// Fetch workouts
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URI}/workouts?page=${page}${filterQuery}`
+					`${apiUrl}/workouts?page=${page}${filterQuery}`
 				);
 
 				const { data, count } = response.data;
