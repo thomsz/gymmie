@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { categories, getMonth } from '../../utils/utils';
+import { categories, getMonth, excerpt } from '../../utils/utils';
 
 import Image from '../Image/Image';
 
@@ -27,7 +27,7 @@ const WorkoutList = (props) => {
 						title={
 							<Link to={`/workout/${item._id}`}>{item.name}</Link>
 						}
-						description={item.description}
+						description={excerpt(item.description)}
 					/>
 					<Space>
 						<div>Program starts in {getMonth(item.startDate)}</div>

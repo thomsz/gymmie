@@ -28,3 +28,17 @@ export const getMonth = (date) => {
 	date = new Date(date);
 	return date.toLocaleDateString('en-US', { month: 'long' });
 };
+
+export const excerpt = (string) => {
+	const max = 250;
+	if (string.length > max) {
+		let trimmed = string.substr(0, max);
+
+		return trimmed.substr(
+			0,
+			Math.min(trimmed.length, trimmed.lastIndexOf('.'))
+		);
+	}
+
+	return string;
+};
