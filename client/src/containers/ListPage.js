@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
+import WorkoutList from '../components/WorkoutList/WorkoutList';
+import Fallback from '../components/Fallback/Fallback';
+import Filters from '../components/Filters/Filters';
+
 import { default as scroll } from 'animated-scroll-to';
 import { Pagination, Skeleton, List } from 'antd';
-import WorkoutList from '../components/WorkoutList/WorkoutList';
-import Filters from '../components/Filters/Filters';
-import Fallback from '../components/Fallback/Fallback';
 
 const ListPage = (props) => {
 	const { page } = useParams();
@@ -17,35 +19,39 @@ const ListPage = (props) => {
 		setFilterByCategory,
 	} = props;
 
-	const [selectedPage, setSelectedPage] = useState(page);
-	const [data, setData] = useState([]);
-	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
 	const [fallback, setFallback] = useState(false);
+	const [totalItems, setTotalItems] = useState(0);
+	const [data, setData] = useState([]);
 
 	useEffect(() => {
 		(async () => {
 			setIsLoading(true);
 
+			// Set filtering by date
 			let filterQuery = filterByDate ? `&month=${filterByDate}` : '';
 
+			// Set filtering by categories
 			filterQuery +=
 				filterByCategory.length > 0
 					? `&category=${filterByCategory.join(',')}`
 					: '';
 
+			// Fetch workouts
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URI}/workouts?page=${selectedPage}${filterQuery}`
+					`${process.env.REACT_APP_API_URI}/workouts?page=${page}${filterQuery}`
 				);
 
 				const { data, count } = response.data;
 
 				if (response.status === 200 && data.length > 0) {
+					// Set data count according to filters
 					const currentCount =
 						filterByDate || filterByCategory.length > 0
 							? count.data
 							: count.total;
+
 					setTotalItems(currentCount);
 					setData(data);
 				} else throw new Error('Could not fetch workouts');
@@ -56,16 +62,17 @@ const ListPage = (props) => {
 
 			setIsLoading(false);
 		})();
-	}, [selectedPage, filterByDate, filterByCategory]);
+	}, [page, filterByDate, filterByCategory]);
 
 	const filterChangeHandler = () => {
-		setSelectedPage(1);
+		// Reset to first page when filter changes
 		props.history.push('/1');
 	};
 
 	const pageChangeHandler = (page) => {
-		setSelectedPage(page);
 		props.history.push(`/${page}`);
+
+		// Scroll up (position 0)
 		scroll(0, { speed: 500 });
 	};
 
@@ -115,15 +122,15 @@ const ListPage = (props) => {
 			)}
 			{totalItems > 20 && (
 				<Pagination
-					current={(page && +page) || 1}
+					size="small"
 					defaultPageSize={20}
+					current={(page && +page) || 1}
 					total={totalItems}
+					showSizeChanger={false}
+					onChange={(page) => pageChangeHandler(page)}
 					showTotal={(total, range) =>
 						`Showing workouts ${range[0]}-${range[1]} (${total} total)`
 					}
-					showSizeChanger={false}
-					onChange={(page) => pageChangeHandler(page)}
-					size="small"
 				/>
 			)}
 		</>

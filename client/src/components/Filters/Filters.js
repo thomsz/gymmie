@@ -1,5 +1,7 @@
 import React from 'react';
-import { Select, PageHeader } from 'antd';
+import { Link } from 'react-router-dom';
+import { Select, PageHeader, Space } from 'antd';
+
 import { months, categories } from '../../utils/utils';
 
 const { Option } = Select;
@@ -14,6 +16,7 @@ const Filters = (props) => {
 	} = props;
 
 	const startDateFilterChangeHandler = (month) => {
+		// month + 1 correction because of array indexing
 		setFilterByDate(month + 1);
 		onFilterChange();
 	};
@@ -48,36 +51,43 @@ const Filters = (props) => {
 			);
 		});
 
+		// Month value correction for <select> element
 		const getMonthValue = filterByDate ? filterByDate - 1 : null;
 
-		return [
-			<Select
-				defaultValue={getMonthValue}
-				style={{ width: 240 }}
-				placeholder="Filter by Starting Date"
-				onChange={startDateFilterChangeHandler}
-				onClear={() => setFilterByDate(null)}
-				key="startDateFilter"
-				allowClear
-			>
-				{options}
-			</Select>,
-			<Select
-				mode="multiple"
-				allowClear
-				maxTagCount={2}
-				style={{ width: 240 }}
-				placeholder="Filter by category"
-				defaultValue={filterByCategory}
-				onChange={categoryFilterChangeHandler}
-				key="categoryFilter"
-			>
-				{children}
-			</Select>,
-		];
+		const selectStyle = { width: 240 };
+
+		return (
+			<Space>
+				<Select
+					allowClear
+					key="startDateFilter"
+					style={selectStyle}
+					placeholder="Filter by Starting Date"
+					defaultValue={getMonthValue}
+					onChange={startDateFilterChangeHandler}
+					onClear={() => setFilterByDate(null)}
+				>
+					{options}
+				</Select>
+				<Select
+					allowClear
+					mode="multiple"
+					maxTagCount={2}
+					key="categoryFilter"
+					placeholder="Filter by category"
+					style={selectStyle}
+					defaultValue={filterByCategory}
+					onChange={categoryFilterChangeHandler}
+				>
+					{children}
+				</Select>
+			</Space>
+		);
 	};
 
-	return <PageHeader title="Workouts" extra={<Extra />} />;
+	return (
+		<PageHeader title={<Link to="/">Workouts</Link>} extra={<Extra />} />
+	);
 };
 
 export default Filters;

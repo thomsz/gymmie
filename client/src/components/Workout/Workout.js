@@ -1,7 +1,9 @@
 import React from 'react';
-import { PageHeader, Tag, Typography, Row } from 'antd';
-import Image from '../Image/Image';
 import { categories, getMonth } from '../../utils/utils';
+
+import Image from '../Image/Image';
+
+import { PageHeader, Tag, Typography, Row } from 'antd';
 
 const { Paragraph } = Typography;
 

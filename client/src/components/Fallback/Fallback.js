@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from '../Image/Image';
+
 import { Result } from 'antd';
 
 const Fallback = () => {
