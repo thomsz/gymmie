@@ -17,7 +17,6 @@ const ListPage = (props) => {
 		setFilterByCategory,
 	} = props;
 
-	const [selectedPage, setSelectedPage] = useState(page);
 	const [data, setData] = useState([]);
 	const [totalItems, setTotalItems] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +35,7 @@ const ListPage = (props) => {
 
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_API_URI}/workouts?page=${selectedPage}${filterQuery}`
+					`${process.env.REACT_APP_API_URI}/workouts?page=${page}${filterQuery}`
 				);
 
 				const { data, count } = response.data;
@@ -56,15 +55,13 @@ const ListPage = (props) => {
 
 			setIsLoading(false);
 		})();
-	}, [selectedPage, filterByDate, filterByCategory]);
+	}, [page, filterByDate, filterByCategory]);
 
 	const filterChangeHandler = () => {
-		setSelectedPage(1);
 		props.history.push('/1');
 	};
 
 	const pageChangeHandler = (page) => {
-		setSelectedPage(page);
 		props.history.push(`/${page}`);
 		scroll(0, { speed: 500 });
 	};
