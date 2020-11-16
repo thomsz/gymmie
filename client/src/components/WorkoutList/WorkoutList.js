@@ -1,16 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { List, Tag, Space } from 'antd';
-import Image from '../Image/Image';
 import { categories, getMonth } from '../../utils/utils';
+
+import Image from '../Image/Image';
+
+import { List, Tag, Space } from 'antd';
 
 const WorkoutList = (props) => {
 	const { workouts } = props;
 
 	return (
 		<List
-			itemLayout="vertical"
 			size="large"
+			itemLayout="vertical"
 			dataSource={workouts}
 			renderItem={(item) => (
 				<List.Item

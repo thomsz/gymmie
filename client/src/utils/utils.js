@@ -23,6 +23,7 @@ export const categories = {
 	c7: 'Advanced',
 };
 
+// Extract month string from date string
 export const getMonth = (date) => {
 	date = new Date(date);
 	return date.toLocaleDateString('en-US', { month: 'long' });

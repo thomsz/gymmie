@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import WorkoutPage from './containers/WorkoutPage';
+import ListPage from './containers/ListPage';
+import logo from './logo.png';
+
 import classes from './App.module.css';
 import { Layout } from 'antd';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import ListPage from './containers/ListPage';
-import WorkoutPage from './containers/WorkoutPage';
-import logo from './logo.png';
 
 const { Header, Footer, Content } = Layout;
 
@@ -19,10 +21,12 @@ function App() {
 		setFilterByCategory,
 	};
 
+	const backgroundColor = '#f7f7f7';
+
 	return (
-		<div>
-			<Layout style={{ minHeight: '100vh', backgroundColor: '#f7f7f7' }}>
-				<Header style={{ backgroundColor: '#f7f7f7' }}>
+		<>
+			<Layout style={{ minHeight: '100vh', backgroundColor }}>
+				<Header style={{ backgroundColor }}>
 					<a href="/">
 						<img src={logo} width="115" alt="logo" />
 					</a>
@@ -49,9 +53,9 @@ function App() {
 						</Switch>
 					</Router>
 				</Content>
-				<Footer style={{ backgroundColor: '#f7f7f7' }}></Footer>
+				<Footer style={{ backgroundColor }}></Footer>
 			</Layout>
-		</div>
+		</>
 	);
 }
 

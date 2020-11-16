@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Skeleton, PageHeader, Row, Space, Image } from 'antd';
 import { useParams } from 'react-router-dom';
-import Workout from '../components/Workout/Workout';
+import axios from 'axios';
+
 import Fallback from '../components/Fallback/Fallback';
+import Workout from '../components/Workout/Workout';
+import Loader from '../components/Loader/Loader';
+
+import { Skeleton, PageHeader, Space } from 'antd';
 
 const WorkoutPage = () => {
 	const { id } = useParams();
 
-	const [data, setData] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [fallback, setFallback] = useState(false);
+	const [data, setData] = useState(null);
 
 	useEffect(() => {
 		(async () => {
@@ -33,22 +36,9 @@ const WorkoutPage = () => {
 		})();
 	}, []);
 
-	const loaderStyle = {
-		width: 35,
-		margin: 'auto',
-		position: 'fixed',
-		top: '50%',
-		left: '50%',
-	};
-
 	return isLoading ? (
-		<div>
-			<div style={loaderStyle}>
-				<Image
-					src="https://cdn4.service.prod.gymondo.io/frontend-pre-login/8/static/spinner-06185d90e9d9973fbd54543830da12f4.gif "
-					alt=""
-				/>
-			</div>
+		<>
+			<Loader />
 			<PageHeader
 				title={
 					<Space>
@@ -58,7 +48,7 @@ const WorkoutPage = () => {
 				}
 				subTitle={<Skeleton.Input style={{ width: 100 }} active />}
 			/>
-		</div>
+		</>
 	) : fallback ? (
 		<PageHeader title="Go Back" onBack={() => window.history.back()}>
 			<Fallback />

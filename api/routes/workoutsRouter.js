@@ -19,15 +19,16 @@ router.get('/', async (req, res) => {
 		skip = (req.query.page - 1) * limit;
 	}
 
+	// Set up filtering by month
 	const month = +req.query.month;
 	let monthFilter = {};
 	if (month && month >= 1 && month <= 12) {
 		monthFilter = { monthNum: month };
 	}
 
+	// Set up filtering by categories
 	let categories = req.query.category;
 	let categoryFilter = {};
-
 	if (categories) {
 		categories = categories.split(',');
 		categoryFilter = { category: { $in: categories } };
